@@ -6,7 +6,7 @@ Projeto de portfólio sobre uma rede fictícia de videolocadoras na Região Metr
 - **Painel em Power BI**, entregue como projeto `.pbip` versionável;
 - **Relatório em PDF** com as análises.
 
-> 📄 **Relatório das análises:** [`docs/Locadora_Rebobina_Analises.pdf`](docs/Locadora_Rebobina_Analises.pdf)
+> **Relatório das análises:** [`docs/Locadora_Rebobina_Analises.pdf`](docs/Locadora_Rebobina_Analises.pdf)
 
 ---
 

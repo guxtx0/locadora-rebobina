@@ -1,4 +1,4 @@
-# 🎬 Locadora Rebobina · Análise de Locações com Power BI
+# Locadora Rebobina · Análise de Locações com Power BI
 
 Projeto de portfólio sobre uma rede fictícia de videolocadoras na Região Metropolitana de Belo Horizonte, com movimento de **janeiro de 2009 a janeiro de 2011**. Ele cobre todo o ciclo de um projeto de dados:
 - **Simulação dos dados** em Python;
@@ -7,7 +7,6 @@ Projeto de portfólio sobre uma rede fictícia de videolocadoras na Região Metr
 - **Relatório em PDF** com as análises.
 
 > 📄 **Relatório das análises:** [`docs/Locadora_Rebobina_Analises.pdf`](docs/Locadora_Rebobina_Analises.pdf)
-> 🎤 **Roteiro de apresentação:** [`docs/Roteiro_de_Apresentacao.pdf`](docs/Roteiro_de_Apresentacao.pdf)
 
 ---
 

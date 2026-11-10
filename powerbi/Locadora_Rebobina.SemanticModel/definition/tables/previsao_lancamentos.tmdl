@@ -1,0 +1,91 @@
+/// Python: demanda prevista e real dos lançamentos nas 8 primeiras semanas (modelo de gradient boosting).
+table previsao_lancamentos
+	lineageTag: d9668727-3ed5-5fdd-b84d-897133fdef6d
+
+	column id_filme
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0d768708-5c81-523f-8e37-427c153ccfab
+		summarizeBy: none
+		sourceColumn: id_filme
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_chegada
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: e3e1b645-43a1-56c0-84c6-064e40f06b7b
+		summarizeBy: none
+		sourceColumn: data_chegada
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column conjunto
+		dataType: string
+		lineageTag: 20879489-4061-53cd-975e-122a91bca792
+		summarizeBy: none
+		sourceColumn: conjunto
+
+		annotation SummarizationSetBy = Automatic
+
+	column demanda_real_8sem
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 4f1493bb-2d7f-53b7-86a0-1cb6d8dd248a
+		summarizeBy: none
+		sourceColumn: demanda_real_8sem
+
+		annotation SummarizationSetBy = Automatic
+
+	column demanda_prevista_8sem
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 98e1ecb9-66a7-564b-967a-09fbae221194
+		summarizeBy: none
+		sourceColumn: demanda_prevista_8sem
+
+		annotation SummarizationSetBy = Automatic
+
+	column erro_absoluto
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 3b1025d7-5dbb-5706-9fc2-3c33deb2f40c
+		summarizeBy: none
+		sourceColumn: erro_absoluto
+
+		annotation SummarizationSetBy = Automatic
+
+	column copias_recomendadas_por_loja
+		dataType: double
+		formatString: #,0.0
+		lineageTag: a8c5b532-6e21-5c51-820e-a01d9a53a6e6
+		summarizeBy: none
+		sourceColumn: copias_recomendadas_por_loja
+
+		annotation SummarizationSetBy = Automatic
+
+	partition previsao_lancamentos = m
+		mode: import
+		source =
+				let
+				    Partes = {
+				        "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"
+				    },
+				    Ler = (b64 as text) as table =>
+				        Table.PromoteHeaders(
+				            Csv.Document(
+				                Binary.Decompress(Binary.FromText(b64, BinaryEncoding.Base64), Compression.Deflate),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				            ),
+				            [PromoteAllScalars = true]
+				        ),
+				    Fonte = Table.Combine(List.Transform(Partes, Ler)),
+				    Nulos = Table.TransformColumns(Fonte, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(Nulos, {{"id_filme", Int64.Type}, {"data_chegada", type date}, {"conjunto", type text}, {"demanda_real_8sem", type number}, {"demanda_prevista_8sem", type number}, {"erro_absoluto", type number}, {"copias_recomendadas_por_loja", type number}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

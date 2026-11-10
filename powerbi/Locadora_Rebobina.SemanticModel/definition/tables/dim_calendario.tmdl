@@ -1,0 +1,185 @@
+/// Calendário de jan/2009 a jan/2011 com feriados nacionais, vésperas, férias escolares e datas comemorativas.
+table dim_calendario
+	lineageTag: 27637f6a-2d26-5a64-a015-05439b76fb84
+	dataCategory: Time
+
+	column Data
+		dataType: dateTime
+		isKey
+		formatString: dd/mm/yyyy
+		lineageTag: 9cf704d0-d055-528f-a0b7-53806c6e43a8
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 71277eda-dd70-5d0d-a3e9-006c05042bee
+		summarizeBy: none
+		sourceColumn: Ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mês Nº'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3bd44bac-597d-5309-9f66-4c1db2a00e3a
+		summarizeBy: none
+		sourceColumn: Mês Nº
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mês'
+		dataType: string
+		lineageTag: 0669c7f5-372d-5415-b8ad-5335ba7bf868
+		summarizeBy: none
+		sourceColumn: Mês
+		sortByColumn: 'Mês Nº'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ano-Mês Nº'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 92df782c-dcb8-5c5f-95ad-a2314ef5da07
+		summarizeBy: none
+		sourceColumn: Ano-Mês Nº
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mês/Ano'
+		dataType: string
+		lineageTag: 3be78088-7d18-5f6f-9102-92567d262fff
+		summarizeBy: none
+		sourceColumn: Mês/Ano
+		sortByColumn: 'Ano-Mês Nº'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		dataType: string
+		lineageTag: 46d940ec-5b4e-516a-a7b4-aff111a711ed
+		summarizeBy: none
+		sourceColumn: Trimestre
+		sortByColumn: 'Trimestre Nº'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Trimestre Nº'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c838cd46-06fa-5498-aad6-b4b6a4269bf2
+		summarizeBy: none
+		sourceColumn: Trimestre Nº
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia da Semana'
+		dataType: string
+		lineageTag: 722e8ac7-3c8d-58de-a1fd-23cefdf6521f
+		summarizeBy: none
+		sourceColumn: Dia da Semana
+		sortByColumn: 'Dia da Semana Nº'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia da Semana Nº'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9958ee7e-f73e-5f10-a3d7-fee09b8fcabf
+		summarizeBy: none
+		sourceColumn: Dia da Semana Nº
+
+		annotation SummarizationSetBy = Automatic
+
+	column Feriado
+		dataType: string
+		lineageTag: 3bf47c2d-5b2a-59f6-8172-63155fe8a392
+		summarizeBy: none
+		sourceColumn: Feriado
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tipo de Dia'
+		dataType: string
+		lineageTag: b7334e95-2fa6-58c5-9e56-279f57d33796
+		summarizeBy: none
+		sourceColumn: Tipo de Dia
+		sortByColumn: 'Tipo de Dia Nº'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tipo de Dia Nº'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5ecf953b-eb6d-5efa-b1ce-24a244deac87
+		summarizeBy: none
+		sourceColumn: Tipo de Dia Nº
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Período Escolar'
+		dataType: string
+		lineageTag: c124ed4b-832c-577e-9368-f4070ad52ea0
+		summarizeBy: none
+		sourceColumn: Período Escolar
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Comemorativa'
+		dataType: string
+		lineageTag: 600f9345-87cc-5b42-9440-2d58d59fdfd3
+		summarizeBy: none
+		sourceColumn: Data Comemorativa
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Jogo do Brasil na Copa'
+		dataType: string
+		lineageTag: 7a628127-ac67-55b1-9bee-e0cc53da6242
+		summarizeBy: none
+		sourceColumn: Jogo do Brasil na Copa
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mês Índice'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 24505429-e709-5165-bc5e-78ee0068b883
+		summarizeBy: none
+		sourceColumn: Mês Índice
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_calendario = m
+		mode: import
+		source =
+				let
+				    Partes = {
+				        "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"
+				    },
+				    Ler = (b64 as text) as table =>
+				        Table.PromoteHeaders(
+				            Csv.Document(
+				                Binary.Decompress(Binary.FromText(b64, BinaryEncoding.Base64), Compression.Deflate),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				            ),
+				            [PromoteAllScalars = true]
+				        ),
+				    Fonte = Table.Combine(List.Transform(Partes, Ler)),
+				    Nulos = Table.TransformColumns(Fonte, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(Nulos, {{"Data", type date}, {"Ano", Int64.Type}, {"Mês Nº", Int64.Type}, {"Mês", type text}, {"Ano-Mês Nº", Int64.Type}, {"Mês/Ano", type text}, {"Trimestre", type text}, {"Trimestre Nº", Int64.Type}, {"Dia da Semana", type text}, {"Dia da Semana Nº", Int64.Type}, {"Feriado", type text}, {"Tipo de Dia", type text}, {"Tipo de Dia Nº", Int64.Type}, {"Período Escolar", type text}, {"Data Comemorativa", type text}, {"Jogo do Brasil na Copa", type text}, {"Mês Índice", Int64.Type}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

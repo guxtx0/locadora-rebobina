@@ -1,0 +1,15 @@
+﻿modelo,metrica,valor,texto,ordem
+Previsão de demanda,Erro médio absoluto (locações),7.664439122070026,"7,7",1
+Previsão de demanda,Erro médio do modelo simples (regressão linear),9.42259328190077,"9,4",2
+Previsão de demanda,Erro percentual ponderado (WAPE),0.18704201285230504,"18,7%",3
+Previsão de demanda,R² no teste,0.9117828538362541,"0,91",4
+Previsão de demanda,Filmes no treino / teste,312.0,312 / 131,5
+Otimização de cópias,Ganho líquido potencial (R$),38413.119999999995,"R$ 38.413,12",1
+Otimização de cópias,Receita perdida por falta de cópia (R$),1829.06,"R$ 1.829,06",2
+Otimização de cópias,Pares filme × loja que pedem mais cópias,1.0,1,3
+Otimização de cópias,Pares filme × loja com cópias em excesso,1060.0,1060,4
+Risco de abandono,AUC no teste,0.7725790776472865,"0,773",1
+Risco de abandono,AUC do modelo simples (regressão logística),0.7436264944627874,"0,744",2
+Risco de abandono,Taxa real de abandono em 90 dias,0.21501599937563412,"21,5%",3
+Risco de abandono,Acerto nos 20% de maior risco,0.47931303669008585,"47,9%",4
+Risco de abandono,Abandonos capturados pelos 20% de maior risco,0.4457350272232305,"44,6%",5

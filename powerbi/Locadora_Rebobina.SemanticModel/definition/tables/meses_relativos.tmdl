@@ -1,0 +1,22 @@
+/// Tabela desconectada com os meses relativos (0 a 24) usada na matriz de coorte.
+table meses_relativos
+	lineageTag: 178d9270-c4d9-5ef7-85ec-374ceeae4ab5
+
+	column 'Mês'
+		dataType: int64
+		formatString: 0
+		lineageTag: b3c17208-e984-55e0-b520-f128551bfac8
+		summarizeBy: none
+		sourceColumn: Mês
+
+		annotation SummarizationSetBy = Automatic
+
+	partition meses_relativos = m
+		mode: import
+		source =
+				let
+				    Fonte = Table.FromColumns({List.Numbers(0, 25)}, type table [Mês = Int64.Type])
+				in
+				    Fonte
+
+	annotation PBI_ResultType = Table

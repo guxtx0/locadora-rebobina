@@ -1,0 +1,68 @@
+/// Python: métricas de validação dos modelos.
+table metricas_modelos
+	lineageTag: ff779e4b-ffcd-5b4f-b046-ed053ded0a71
+
+	column modelo
+		dataType: string
+		lineageTag: 3ef868c9-e533-5e9a-81ae-ec8bfc7d2e2b
+		summarizeBy: none
+		sourceColumn: modelo
+
+		annotation SummarizationSetBy = Automatic
+
+	column metrica
+		dataType: string
+		lineageTag: cbea516b-e030-510b-a357-0f48ebfe7398
+		summarizeBy: none
+		sourceColumn: metrica
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor
+		dataType: double
+		formatString: #,0.0
+		lineageTag: d8a71bce-5c24-5374-931e-1f5404488f12
+		summarizeBy: none
+		sourceColumn: valor
+
+		annotation SummarizationSetBy = Automatic
+
+	column texto
+		dataType: string
+		lineageTag: 31ded1c8-c82b-5f41-8da3-b91a94c55f19
+		summarizeBy: none
+		sourceColumn: texto
+
+		annotation SummarizationSetBy = Automatic
+
+	column ordem
+		dataType: int64
+		formatString: 0
+		lineageTag: 29a511da-c9d5-5ac9-b335-1615b11e9f1e
+		summarizeBy: none
+		sourceColumn: ordem
+
+		annotation SummarizationSetBy = Automatic
+
+	partition metricas_modelos = m
+		mode: import
+		source =
+				let
+				    Partes = {
+				        "lZNNbtswEIX3PgVBxIANDFRRkiVrGRRplzWMFl0z0iRhQWkUkg6MXqQH6KLoIpsWvUB1sQ7lNAhQu0GgH5LSzKfhe6OOWrQEHQZnGg132pKDgPtAQK7FbrZxeGf8+JVEi3x2um81XDhHohu/t4aEvvRkd4HEwlKjx2/jL/RLqJKyBFlBJUE9z2h5NhUivOkGi14sHF479FOSNT1qt4Q6KTKQNRQSsv8wB3QN9mGnrRiob9Fpxi8+nm8ulpAmqgap1lDNJeTHIdvfP0RPIqAPyAm1AplCrSQUx+PfGNtxxTHFoeHh1UNurrJ48VrlClazd8F05nOU6ABoxp+D0R7e6v6Gdzne3+4MlzpQwL4xXP5ie7aEfF2oPGGU3J6JfJ3wClQWZT3F22KDJugoRGtaHsmJK235yWPQAa3WWZ2k5URWCS8gLaO2p8AbzZaIq7hfMX4Rlj5pcbtD/hBrITpt/GOo4iN/Eaih7u97wTTcN2w/gUrL9HArZlvjm4mjL1l56gnOP7x+6lVVRa+qKo/yHI9+ptXoerz3gX+F2CtVMeGKqeH+xb3Xey0cslFPnsba61S0cZtpkrFtGXs/dduRghp0/Of05EWWzuMrFpHdcjGS04s1yKKCei6P7/5hwrLrIexio3s2w57ErRhXQMm41ewP"
+				    },
+				    Ler = (b64 as text) as table =>
+				        Table.PromoteHeaders(
+				            Csv.Document(
+				                Binary.Decompress(Binary.FromText(b64, BinaryEncoding.Base64), Compression.Deflate),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				            ),
+				            [PromoteAllScalars = true]
+				        ),
+				    Fonte = Table.Combine(List.Transform(Partes, Ler)),
+				    Nulos = Table.TransformColumns(Fonte, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(Nulos, {{"modelo", type text}, {"metrica", type text}, {"valor", type number}, {"texto", type text}, {"ordem", Int64.Type}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,131 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "modelos_copias",
+  "position": {
+    "x": 30,
+    "y": 492,
+    "z": 4000,
+    "height": 200,
+    "width": 598,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_filme"
+                    }
+                  },
+                  "Property": "filme"
+                }
+              },
+              "queryRef": "dim_filme.filme",
+              "nativeQueryRef": "filme",
+              "displayName": "Filme"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Cópias Atuais"
+                }
+              },
+              "queryRef": "_Medidas.Cópias Atuais",
+              "nativeQueryRef": "Cópias Atuais",
+              "displayName": "Cópias hoje"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Cópias Ideais"
+                }
+              },
+              "queryRef": "_Medidas.Cópias Ideais",
+              "nativeQueryRef": "Cópias Ideais",
+              "displayName": "Cópias ideais"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Ganho com Cópias Ideais"
+                }
+              },
+              "queryRef": "_Medidas.Ganho com Cópias Ideais",
+              "nativeQueryRef": "Ganho com Cópias Ideais",
+              "displayName": "Ganho estimado"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas"
+                  }
+                },
+                "Property": "Ganho com Cópias Ideais"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Cópias atuais × ideais na fase de lançamento (3 lojas)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

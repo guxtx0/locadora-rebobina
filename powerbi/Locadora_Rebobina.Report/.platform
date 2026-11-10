@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Locadora Rebobina"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3c9b1f6e-7d2a-4f58-9a41-2b8e5c0d7f13"
+  }
+}

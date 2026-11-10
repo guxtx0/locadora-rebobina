@@ -1,0 +1,46 @@
+/// Grupo de cálculo: aplica comparações de tempo a qualquer medida do modelo.
+table 'Comparação de Tempo'
+	lineageTag: d88d514d-a515-5a88-b826-162f44e4206c
+
+	calculationGroup
+		precedence: 1
+
+		calculationItem 'Período atual' = SELECTEDMEASURE ()
+			ordinal: 0
+
+		calculationItem 'Mês anterior' = CALCULATE ( SELECTEDMEASURE (), DATEADD ( dim_calendario[Data], -1, MONTH ) )
+			ordinal: 1
+
+		calculationItem 'Mesmo período do ano anterior' = CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( dim_calendario[Data] ) )
+			ordinal: 2
+
+		calculationItem 'Acumulado no ano' = CALCULATE ( SELECTEDMEASURE (), DATESYTD ( dim_calendario[Data] ) )
+			ordinal: 3
+
+		calculationItem 'Variação vs ano anterior %' =
+				VAR _atual = SELECTEDMEASURE ()
+				VAR _anterior = CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( dim_calendario[Data] ) )
+				RETURN
+				    IF ( ISSELECTEDMEASURE ( [Período Analisado] ), _atual, DIVIDE ( _atual - _anterior, _anterior ) )
+			ordinal: 4
+
+			formatStringDefinition = IF ( ISSELECTEDMEASURE ( [Período Analisado] ), SELECTEDMEASUREFORMATSTRING (), "+0.0%;-0.0%;0.0%" )
+
+	column 'Comparação'
+		dataType: string
+		lineageTag: 7362b7dc-9195-5607-a72f-380c76c0a1b4
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordem
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordem
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: dd642d49-340c-56a0-96c8-6bd77f458b42
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic

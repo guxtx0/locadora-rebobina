@@ -1,0 +1,79 @@
+/// Lojas da rede Rebobina.
+table dim_loja
+	lineageTag: 1116987a-9be1-5367-aaf7-9b6bb6e021d8
+
+	column id_loja
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 98949d18-d700-56bf-a00c-678628e7aca9
+		summarizeBy: none
+		sourceColumn: id_loja
+
+		annotation SummarizationSetBy = Automatic
+
+	column loja
+		dataType: string
+		lineageTag: b40e0f50-af57-5742-b4b6-976f136efd5f
+		summarizeBy: none
+		sourceColumn: loja
+
+		annotation SummarizationSetBy = Automatic
+
+	column bairro
+		dataType: string
+		lineageTag: 7096257c-10e1-52c6-8b86-bde2bff5e9bc
+		summarizeBy: none
+		sourceColumn: bairro
+
+		annotation SummarizationSetBy = Automatic
+
+	column cidade
+		dataType: string
+		lineageTag: 1d1b973d-d2cc-5e32-a3bc-08ca8b23b024
+		summarizeBy: none
+		sourceColumn: cidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column gerente
+		dataType: string
+		lineageTag: 3f4d3422-7624-5ff1-acfb-dcd3b1d57df7
+		summarizeBy: none
+		sourceColumn: gerente
+
+		annotation SummarizationSetBy = Automatic
+
+	column data_inauguracao
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: b723df44-a4cf-51f6-af6c-a4bff986846b
+		summarizeBy: none
+		sourceColumn: data_inauguracao
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_loja = m
+		mode: import
+		source =
+				let
+				    Partes = {
+				        "TY9BDoJADEX3nGIO0EkGCTFuAROWBg9ACtOQGqDJMLhw5R28oSdxQFE3/c1v8/I/27qXC8I6GmTnBFq2aAk6cjR6Aoseax5x7maHLUoUQ0WNNMFSuYweOxrU8/5Qx96KQyvwXbYzlNRTeC8YJ9gZk2iT6thEux8pK1fGGa84TQybZtSLKsXxTZYslTTkvKhTyMYOF1aqzUGbOEr+WOT5HSkPDUKjj6w+FExdIPAQzJWw1yFQnEYv"
+				    },
+				    Ler = (b64 as text) as table =>
+				        Table.PromoteHeaders(
+				            Csv.Document(
+				                Binary.Decompress(Binary.FromText(b64, BinaryEncoding.Base64), Compression.Deflate),
+				                [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				            ),
+				            [PromoteAllScalars = true]
+				        ),
+				    Fonte = Table.Combine(List.Transform(Partes, Ler)),
+				    Nulos = Table.TransformColumns(Fonte, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(Nulos, {{"id_loja", Int64.Type}, {"loja", type text}, {"bairro", type text}, {"cidade", type text}, {"gerente", type text}, {"data_inauguracao", type date}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

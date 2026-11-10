@@ -1,0 +1,76 @@
+relationship c58b366c-3146-5b27-822d-9043901d145c
+	fromColumn: fato_locacao.data_locacao
+	toColumn: dim_calendario.Data
+
+relationship 89d03c72-bbf1-59d4-b472-bd8484865d78
+	fromColumn: fato_pagamento.data_pagamento
+	toColumn: dim_calendario.Data
+
+relationship 1c82c83e-636a-5871-af80-48999a81215f
+	fromColumn: fato_locacao.id_filme
+	toColumn: dim_filme.id_filme
+
+relationship 588f86e1-3313-5771-82e0-f4a357310d4d
+	fromColumn: fato_pagamento.id_filme
+	toColumn: dim_filme.id_filme
+
+relationship 790bf42d-a413-539f-898a-af4409428adf
+	fromColumn: fato_locacao.id_cliente
+	toColumn: dim_cliente.id_cliente
+
+relationship 341755cd-2cc3-5550-8b07-3ff2921b9402
+	fromColumn: fato_pagamento.id_cliente
+	toColumn: dim_cliente.id_cliente
+
+relationship f0a67354-d3b4-571c-9b31-f821562f116a
+	fromColumn: fato_locacao.id_loja
+	toColumn: dim_loja.id_loja
+
+relationship 366c8b5d-3da3-52ea-b6f7-0c98da701e4c
+	fromColumn: fato_pagamento.id_loja
+	toColumn: dim_loja.id_loja
+
+relationship 698bf430-f37d-59b9-aae6-2fa8bcd419f6
+	fromColumn: ponte_filme_ator.id_ator
+	toColumn: dim_ator.id_ator
+
+relationship 177b66ae-12f9-5519-ae6d-d0be9c0a1173
+	crossFilteringBehavior: bothDirections
+	fromColumn: ponte_filme_ator.id_filme
+	toColumn: dim_filme.id_filme
+
+relationship f9d87ee6-75d6-5e26-a3c3-f984182308a6
+	fromColumn: dim_copia.id_filme
+	toColumn: dim_filme.id_filme
+
+relationship ef429bdb-3006-5fbb-88e7-cee8a942f4d0
+	fromColumn: dim_copia.id_loja
+	toColumn: dim_loja.id_loja
+
+relationship 3fa1f5f7-9247-5b36-a4c2-50689656c00c
+	fromColumn: fato_demanda_nao_atendida.data
+	toColumn: dim_calendario.Data
+
+relationship ece89465-2f4d-5137-90e0-dc07e5fbc18e
+	fromColumn: fato_demanda_nao_atendida.id_filme
+	toColumn: dim_filme.id_filme
+
+relationship 4972517e-9d4b-5bdd-8a58-4e7b147be89b
+	fromColumn: fato_demanda_nao_atendida.id_loja
+	toColumn: dim_loja.id_loja
+
+relationship 7827865f-600c-59ac-bc6b-91bd41084c55
+	fromColumn: fato_demanda_nao_atendida.id_cliente
+	toColumn: dim_cliente.id_cliente
+
+relationship 5d53dda0-417b-535d-80b5-c0eed94061f7
+	fromColumn: previsao_lancamentos.id_filme
+	toColumn: dim_filme.id_filme
+
+relationship 3ad99dad-dcbe-5880-b54c-fd52791f3e8f
+	fromColumn: otimizacao_copias.id_filme
+	toColumn: dim_filme.id_filme
+
+relationship 71890fea-6f8d-5923-80ad-6a449622b330
+	fromColumn: otimizacao_copias.id_loja
+	toColumn: dim_loja.id_loja

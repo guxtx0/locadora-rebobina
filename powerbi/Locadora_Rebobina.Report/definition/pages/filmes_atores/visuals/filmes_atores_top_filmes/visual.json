@@ -1,0 +1,146 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "filmes_atores_top_filmes",
+  "position": {
+    "x": 30,
+    "y": 256,
+    "z": 4000,
+    "height": 436,
+    "width": 588,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_filme"
+                    }
+                  },
+                  "Property": "filme"
+                }
+              },
+              "queryRef": "dim_filme.filme",
+              "nativeQueryRef": "filme",
+              "displayName": "Filme"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_filme"
+                    }
+                  },
+                  "Property": "categoria"
+                }
+              },
+              "queryRef": "dim_filme.categoria",
+              "nativeQueryRef": "categoria",
+              "displayName": "Categoria"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_filme"
+                    }
+                  },
+                  "Property": "ano_lancamento"
+                }
+              },
+              "queryRef": "dim_filme.ano_lancamento",
+              "nativeQueryRef": "ano_lancamento",
+              "displayName": "Ano"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Locações (Top 15 filmes)"
+                }
+              },
+              "queryRef": "_Medidas.Locações (Top 15 filmes)",
+              "nativeQueryRef": "Locações (Top 15 filmes)",
+              "displayName": "Locações"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Faturamento (Top 15 filmes)"
+                }
+              },
+              "queryRef": "_Medidas.Faturamento (Top 15 filmes)",
+              "nativeQueryRef": "Faturamento (Top 15 filmes)",
+              "displayName": "Faturamento"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas"
+                  }
+                },
+                "Property": "Faturamento (Top 15 filmes)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top 15 filmes por faturamento'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

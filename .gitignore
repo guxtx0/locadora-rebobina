@@ -1,0 +1,10 @@
+# Power BI: arquivos locais e cache de dados
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# saídas intermediárias do pipeline
+build/
+__pycache__/
+
+# base original do TMDB (baixe conforme dados/brutos/LEIA-ME.md)
+dados/brutos/*.csv

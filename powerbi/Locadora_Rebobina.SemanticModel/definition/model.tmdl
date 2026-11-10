@@ -1,0 +1,30 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["dim_calendario", "dim_filme", "dim_ator", "ponte_filme_ator", "dim_cliente", "dim_loja", "fato_locacao", "fato_pagamento", "dim_copia", "fato_demanda_nao_atendida", "previsao_lancamentos", "otimizacao_copias", "importancia_churn", "metricas_modelos"]
+
+ref table dim_calendario
+ref table dim_filme
+ref table dim_ator
+ref table ponte_filme_ator
+ref table dim_cliente
+ref table dim_loja
+ref table fato_locacao
+ref table fato_pagamento
+ref table dim_copia
+ref table fato_demanda_nao_atendida
+ref table previsao_lancamentos
+ref table otimizacao_copias
+ref table importancia_churn
+ref table metricas_modelos
+ref table _Medidas
+ref table meses_relativos
+ref table 'Comparação de Tempo'

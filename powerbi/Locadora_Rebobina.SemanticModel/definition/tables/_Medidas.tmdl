@@ -1,0 +1,394 @@
+/// Tabela só de medidas.
+table _Medidas
+	lineageTag: 2791d7ac-d65f-55c2-961b-a6f1e6b14579
+
+	/// Total recebido (locações + multas), em R$.
+	measure Faturamento = SUM ( fato_pagamento[valor] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: b26c43f7-abea-51bb-90c4-83f4ea100b0b
+
+	measure 'Receita de Locações' = CALCULATE ( [Faturamento], fato_pagamento[tipo_pagamento] = "Locação" )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: e0465978-3320-5e39-98a6-f8047dbfea19
+
+	measure 'Receita de Multas' = CALCULATE ( [Faturamento], fato_pagamento[tipo_pagamento] = "Multa por atraso" )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: 7cccb672-d284-5440-8eef-6affbed5700f
+
+	measure '% Receita de Multas' = DIVIDE ( [Receita de Multas], [Faturamento] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 1. Receita
+		lineageTag: 755d68f4-fb02-575f-bc4e-dcc1af1eb446
+
+	/// Faturamento dividido pelo número de locações (inclui multas).
+	measure 'Ticket Médio por Locação' = DIVIDE ( [Faturamento], [Locações] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: 8f4fbdc3-f645-54e4-8858-c7838c09acaf
+
+	measure 'Faturamento por Cliente' = DIVIDE ( [Faturamento], [Clientes Ativos] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: 683b07fb-b66b-56c7-b1ad-c9e3fad096c8
+
+	measure 'Faturamento Mês Anterior' = CALCULATE ( [Faturamento], DATEADD ( dim_calendario[Data], -1, MONTH ) )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: 614ed4d5-d55c-5c4d-b35f-849344d52ff3
+
+	measure 'Variação vs Mês Anterior %' = DIVIDE ( [Faturamento] - [Faturamento Mês Anterior], [Faturamento Mês Anterior] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 1. Receita
+		lineageTag: 3bcf7f12-d5fa-5e23-a76d-3b56d7188c94
+
+	/// Descontos de promoções: quarta promocional, combo de 3 filmes e cartão fidelidade.
+	measure 'Descontos Concedidos' = SUM ( fato_locacao[valor_desconto] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: 7e5dfc17-29c1-53b9-b713-497ad66de1dd
+
+	measure '% Locações com Promoção' = DIVIDE ( CALCULATE ( [Locações], fato_locacao[promocao] <> "Sem promoção" ), [Locações] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 1. Receita
+		lineageTag: 921abd33-648f-5314-a854-6c3d32462a27
+
+	/// Multas de atraso ainda não pagas.
+	measure 'Multas Pendentes' = SUM ( fato_locacao[valor_pendente] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 1. Receita
+		lineageTag: e90bca68-618e-52a7-b639-acaed3d4dfdd
+
+	/// Quantidade de filmes alugados.
+	measure 'Locações' = COUNTROWS ( fato_locacao )
+		formatString: #,0
+		displayFolder: 2. Volume
+		lineageTag: c06e771c-5c65-5baf-96cf-d022983860ab
+
+	/// Clientes com pelo menos uma locação no período filtrado.
+	measure 'Clientes Ativos' = DISTINCTCOUNT ( fato_locacao[id_cliente] )
+		formatString: #,0
+		displayFolder: 2. Volume
+		lineageTag: 100e88c6-6b2a-5bd6-a01a-95886c5d5e2a
+
+	measure 'Locações por Cliente' = DIVIDE ( [Locações], [Clientes Ativos] )
+		formatString: #,0.0
+		displayFolder: 2. Volume
+		lineageTag: 88a9321e-3e22-5ec5-9bc4-4b87727357c0
+
+	measure 'Locações de Lançamentos' = CALCULATE ( [Locações], fato_locacao[tipo_preco] = "Lançamento" )
+		formatString: #,0
+		displayFolder: 2. Volume
+		lineageTag: cc2ef967-7065-508d-ae50-d8036288434b
+
+	measure '% Locações de Lançamentos' = DIVIDE ( [Locações de Lançamentos], [Locações] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 2. Volume
+		lineageTag: 17cbd51d-756b-5053-95df-e92ba3f1d6c9
+
+	/// Locações divididas pelo número de dias do calendário no filtro.
+	measure 'Média Diária de Locações' = DIVIDE ( [Locações], COUNTROWS ( dim_calendario ) )
+		formatString: #,0.0
+		displayFolder: 2. Volume
+		lineageTag: 9ee875ac-1f69-5bac-8c65-02b470e0f5f3
+
+	measure 'Filmes no Catálogo' = COUNTROWS ( dim_filme )
+		formatString: #,0
+		displayFolder: 3. Catálogo
+		lineageTag: a5e5be30-5aab-53f4-94d8-c6c884194200
+
+	measure 'Filmes Locados' = DISTINCTCOUNT ( fato_locacao[id_filme] )
+		formatString: #,0
+		displayFolder: 3. Catálogo
+		lineageTag: 2c8ba85f-4a8e-57a3-807a-4d68668609fd
+
+	measure 'Locações por Título' = DIVIDE ( [Locações], [Filmes Locados] )
+		formatString: #,0.0
+		displayFolder: 3. Catálogo
+		lineageTag: 6c6eaefa-90eb-5b17-b0a9-c32a88bb2c3e
+
+	measure 'Preço Médio de Locação' = AVERAGE ( fato_locacao[valor_locacao] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 3. Catálogo
+		lineageTag: 7742ff51-48f8-5382-a419-d94428fb669b
+
+	measure '% Animação e Família' = DIVIDE ( CALCULATE ( [Locações], KEEPFILTERS ( dim_filme[categoria] IN { "Animação", "Família" } ) ), [Locações] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 3. Catálogo
+		lineageTag: 6f9403fd-dfb8-5ff7-a0ea-616b26b1b717
+
+	measure '% Terror' = DIVIDE ( CALCULATE ( [Locações], KEEPFILTERS ( dim_filme[categoria] = "Terror" ) ), [Locações] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 3. Catálogo
+		lineageTag: def06c15-5e9a-59c4-b141-112e0df81fec
+
+	/// Locações de filmes ligados a alguma data comemorativa (Natal, Dia das Mães, Halloween etc.).
+	measure 'Locações de Filmes Temáticos' = CALCULATE ( [Locações], KEEPFILTERS ( NOT ISBLANK ( dim_filme[tema] ) ) )
+		formatString: #,0
+		displayFolder: 3. Catálogo
+		lineageTag: 16331829-56be-5bb0-977b-527b421df539
+
+	measure 'Locações Devolvidas' = CALCULATE ( [Locações], fato_locacao[status_devolucao] <> "Em aberto" )
+		formatString: #,0
+		displayFolder: 4. Operação
+		lineageTag: deb1b585-c78d-5929-8f48-ac24d9048044
+
+	measure 'Locações com Atraso' = CALCULATE ( [Locações], fato_locacao[status_devolucao] = "Com atraso" )
+		formatString: #,0
+		displayFolder: 4. Operação
+		lineageTag: 7f663d5c-6edd-5412-8331-55c8968206c7
+
+	measure '% Devoluções com Atraso' = DIVIDE ( [Locações com Atraso], [Locações Devolvidas] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 4. Operação
+		lineageTag: 5e23c622-cac0-5e48-8f56-00ca0dc8773b
+
+	measure 'Locações em Aberto' = CALCULATE ( [Locações], fato_locacao[status_devolucao] = "Em aberto" )
+		formatString: #,0
+		displayFolder: 4. Operação
+		lineageTag: 6190c787-6d51-5e78-93fa-c89f135c5924
+
+	measure 'Dias Médios com Cliente' = AVERAGE ( fato_locacao[dias_com_cliente] )
+		formatString: #,0.0
+		displayFolder: 4. Operação
+		lineageTag: ac301b4a-3aa3-5337-8c97-cc718e0676e3
+
+	measure 'Média Diária em Vésperas' = CALCULATE ( [Média Diária de Locações], dim_calendario[Tipo de Dia] = "Véspera de feriado" )
+		formatString: #,0.0
+		displayFolder: 5. Calendário
+		lineageTag: 62bac384-34f1-50c8-92a5-371ca3ab3727
+
+	measure 'Média Diária em Dias Úteis' = CALCULATE ( [Média Diária de Locações], dim_calendario[Tipo de Dia] = "Dia útil" )
+		formatString: #,0.0
+		displayFolder: 5. Calendário
+		lineageTag: aba213e8-37e8-5598-848c-3e3d3ff2af02
+
+	/// Quanto a média diária de locações na véspera de feriado supera a de um dia útil comum.
+	measure 'Efeito Véspera de Feriado %' = DIVIDE ( [Média Diária em Vésperas], [Média Diária em Dias Úteis] ) - 1
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 5. Calendário
+		lineageTag: e77d5969-0864-5388-b2c1-0f3c623acae1
+
+	measure 'Média Diária em Datas Comemorativas' = IF ( NOT ISBLANK ( SELECTEDVALUE ( dim_calendario[Data Comemorativa] ) ), [Média Diária de Locações] )
+		formatString: #,0.0
+		displayFolder: 5. Calendário
+		lineageTag: 7b4741d0-6229-50b9-8315-1c45a5b3d249
+
+	measure 'Período Analisado' =
+			VAR _ini = MIN ( fato_locacao[data_locacao] )
+			VAR _fim = MAX ( fato_locacao[data_locacao] )
+			RETURN
+			    FORMAT ( _ini, "dd/mm/yyyy" ) & " a " & FORMAT ( _fim, "dd/mm/yyyy" )
+		displayFolder: 5. Calendário
+		lineageTag: d2c2d20a-eb0c-587d-b729-14817de1289f
+
+	/// Dias-cópia em que as cópias estiveram com clientes dentro do período filtrado (considera locações que começaram antes do período).
+	measure 'Dias Alugados' =
+			VAR _ini = MIN ( dim_calendario[Data] )
+			VAR _fim = MAX ( dim_calendario[Data] ) + 1
+			RETURN
+			    SUMX (
+			        FILTER (
+			            CALCULATETABLE ( fato_locacao, REMOVEFILTERS ( dim_calendario ) ),
+			            fato_locacao[data_locacao] < _fim && fato_locacao[data_fim_ocupacao] > _ini
+			        ),
+			        INT ( MIN ( _fim, fato_locacao[data_fim_ocupacao] ) - MAX ( _ini, fato_locacao[data_locacao] ) )
+			    )
+		formatString: #,0
+		displayFolder: 7. Estoque
+		lineageTag: 94cd4c66-7d99-5ce0-9ac4-7798c563a05c
+
+	/// Dias-cópia em que cada cópia já estava no acervo dentro do período filtrado.
+	measure 'Dias de Cópia Disponíveis' =
+			VAR _ini = MIN ( dim_calendario[Data] )
+			VAR _fim = MAX ( dim_calendario[Data] ) + 1
+			RETURN
+			    SUMX (
+			        FILTER ( dim_copia, dim_copia[data_aquisicao] < _fim ),
+			        INT ( _fim - MAX ( _ini, dim_copia[data_aquisicao] ) )
+			    )
+		formatString: #,0
+		displayFolder: 7. Estoque
+		lineageTag: 18a66f6d-224d-5881-af46-5592bfe213fc
+
+	/// Percentual do tempo em que as cópias estiveram fora da loja, alugadas.
+	measure 'Taxa de Ocupação' = DIVIDE ( [Dias Alugados], [Dias de Cópia Disponíveis] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 7. Estoque
+		lineageTag: 8ad93854-8193-5a60-b64a-e7f7e2060578
+
+	measure 'Ocupação – Lançamentos do Período' = CALCULATE ( [Taxa de Ocupação], dim_filme[perfil_titulo] = "Lançamento do período" )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 7. Estoque
+		lineageTag: 5f773ed7-a58c-5a43-8be3-d2ad1dece529
+
+	measure 'Ocupação – Acervo' = CALCULATE ( [Taxa de Ocupação], dim_filme[perfil_titulo] = "Acervo" )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 7. Estoque
+		lineageTag: 1ce4610f-79c0-5b90-a92b-60c18a757acb
+
+	measure 'Ocupação – Clássicos' = CALCULATE ( [Taxa de Ocupação], dim_filme[perfil_titulo] = "Clássico" )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 7. Estoque
+		lineageTag: 5c1c4eaa-2c53-55a2-862c-78e186804478
+
+	measure 'Cópias no Acervo' = COUNTROWS ( FILTER ( dim_copia, dim_copia[data_aquisicao] <= MAX ( dim_calendario[Data] ) ) )
+		formatString: #,0
+		displayFolder: 7. Estoque
+		lineageTag: b99f88e6-6bc3-5ead-8b2e-5f3a4d08a663
+
+	/// Tentativas de locação em que não havia cópia livre.
+	measure 'Demanda Não Atendida' = COUNTROWS ( fato_demanda_nao_atendida )
+		formatString: #,0
+		displayFolder: 7. Estoque
+		lineageTag: f364c1e1-9d55-5500-8315-ae324bb1e445
+
+	measure 'Receita em Risco por Falta de Cópia' = SUM ( fato_demanda_nao_atendida[valor_estimado] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 7. Estoque
+		lineageTag: 5b76c8aa-cda6-5f7d-82f4-741fdbf60937
+
+	/// Clientes cuja primeira locação do período caiu no mês da coorte.
+	measure 'Clientes na Coorte' = CALCULATE ( COUNTROWS ( dim_cliente ), NOT ISBLANK ( dim_cliente[coorte_indice] ) )
+		formatString: #,0
+		displayFolder: 8. Retenção
+		lineageTag: 237fcbf1-fc2d-5c7a-a8be-a34845760102
+
+	/// % dos clientes da coorte que alugaram no k-ésimo mês após a primeira locação.
+	measure 'Retenção %' =
+			VAR _k = SELECTEDVALUE ( meses_relativos[Mês] )
+			VAR _c = SELECTEDVALUE ( dim_cliente[coorte_indice] )
+			VAR _alvo = _c + _k
+			VAR _ativos =
+			    CALCULATE (
+			        DISTINCTCOUNT ( fato_locacao[id_cliente] ),
+			        REMOVEFILTERS ( dim_calendario ),
+			        TREATAS ( { _alvo }, dim_calendario[Mês Índice] )
+			    )
+			RETURN
+			    IF ( NOT ISBLANK ( _c ) && NOT ISBLANK ( _k ) && _alvo <= 25, DIVIDE ( _ativos, [Clientes na Coorte] ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 8. Retenção
+		lineageTag: 3bfa8b76-d6ea-5b7d-a2c1-16db277f58c5
+
+	measure 'Retenção Média no 3º Mês' =
+			AVERAGEX (
+			    VALUES ( dim_cliente[coorte_indice] ),
+			    CALCULATE ( [Retenção %], meses_relativos[Mês] = 3 )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 8. Retenção
+		lineageTag: c745fbb1-087f-513e-9bab-bef6f2bba9de
+
+	measure 'Retenção Média no 12º Mês' =
+			AVERAGEX (
+			    VALUES ( dim_cliente[coorte_indice] ),
+			    CALCULATE ( [Retenção %], meses_relativos[Mês] = 12 )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 8. Retenção
+		lineageTag: 491fb7e9-2b9a-5c32-9967-c5f5b47c32e4
+
+	measure 'Demanda Prevista (teste)' = CALCULATE ( SUM ( previsao_lancamentos[demanda_prevista_8sem] ), previsao_lancamentos[conjunto] = "Teste" )
+		formatString: #,0.0
+		displayFolder: 9. Modelos (Python)
+		lineageTag: fe1c3b15-ca37-5a1e-bc6f-00bf14e2f305
+
+	measure 'Demanda Real (teste)' = CALCULATE ( SUM ( previsao_lancamentos[demanda_real_8sem] ), previsao_lancamentos[conjunto] = "Teste" )
+		formatString: #,0.0
+		displayFolder: 9. Modelos (Python)
+		lineageTag: d907f14e-40d2-5565-98fc-31faa2d05c01
+
+	/// Erro médio absoluto, em locações, nos lançamentos de teste (mai a dez/2010).
+	measure 'Erro Médio da Previsão' = CALCULATE ( AVERAGE ( previsao_lancamentos[erro_absoluto] ), previsao_lancamentos[conjunto] = "Teste" )
+		formatString: #,0.0
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 72335fb5-24ea-5c68-88d3-288ae64138a3
+
+	measure 'R² da Previsão' = LOOKUPVALUE ( metricas_modelos[texto], metricas_modelos[metrica], "R² no teste" )
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 0df56e04-0e2f-5d8d-aa7e-9faa06353469
+
+	measure 'AUC do Modelo de Abandono' = LOOKUPVALUE ( metricas_modelos[texto], metricas_modelos[metrica], "AUC no teste" )
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 759e2579-c326-58d3-8896-6215e45d168a
+
+	measure 'Cópias Atuais' = SUM ( otimizacao_copias[copias_atuais] )
+		formatString: #,0
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 0494cd45-df20-56a7-b047-4b138bbcfe19
+
+	measure 'Cópias Ideais' = SUM ( otimizacao_copias[copias_ideais] )
+		formatString: #,0
+		displayFolder: 9. Modelos (Python)
+		lineageTag: edaf7ce6-4212-5ce4-a48e-f6ec28ab9b4b
+
+	/// Lucro adicional na fase de lançamento se cada filme tivesse o número ideal de cópias em cada loja.
+	measure 'Ganho com Cópias Ideais' = SUM ( otimizacao_copias[ganho_liquido] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 9. Modelos (Python)
+		lineageTag: ba600a82-f7b8-5a45-8b5c-ea5efe0f182a
+
+	measure Clientes = COUNTROWS ( dim_cliente )
+		formatString: #,0
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 5c260c57-079b-59c4-89a2-742108ad49b1
+
+	measure 'Clientes em Risco Alto' = CALCULATE ( COUNTROWS ( dim_cliente ), dim_cliente[faixa_risco] = "1. Alto" )
+		formatString: #,0
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 5224b4b8-a1f4-5a20-865b-f68184c1b73c
+
+	/// Gasto dos últimos 180 dias ponderado pela probabilidade de abandono.
+	measure 'Receita em Risco (Abandono)' = SUM ( dim_cliente[receita_em_risco_180d] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 444ed7d6-10cb-518e-bde8-1bcb173bbd1b
+
+	measure 'Importância do Fator' = SUM ( importancia_churn[importancia] )
+		formatString: 0.000
+		displayFolder: 9. Modelos (Python)
+		lineageTag: 88032961-f394-5650-96c8-1b3d7f41067e
+
+	/// Faturamento apenas para os 15 filmes que mais faturaram no filtro atual.
+	measure 'Faturamento (Top 15 filmes)' = IF ( RANKX ( ALLSELECTED ( dim_filme ), [Faturamento],, DESC ) <= 15, [Faturamento] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 6. Rankings
+		lineageTag: 4a976cdf-aa4a-50b7-a5d2-6e6a37abdf5b
+
+	measure 'Locações (Top 15 filmes)' = IF ( RANKX ( ALLSELECTED ( dim_filme ), [Faturamento],, DESC ) <= 15, [Locações] )
+		formatString: #,0
+		displayFolder: 6. Rankings
+		lineageTag: 392095f5-90b2-50a3-9674-3e412608aaf0
+
+	measure 'Locações (Top 10 atores)' = IF ( RANKX ( ALLSELECTED ( dim_ator[ator] ), [Locações],, DESC ) <= 10, [Locações] )
+		formatString: #,0
+		displayFolder: 6. Rankings
+		lineageTag: 3ed0735c-db8a-52f3-ace3-6fa29606ea5e
+
+	measure 'Faturamento (Top 10 bairros)' = IF ( RANKX ( ALLSELECTED ( dim_cliente[bairro_cidade] ), [Faturamento],, DESC ) <= 10, [Faturamento] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 6. Rankings
+		lineageTag: 9428691d-46a4-58c7-a6ea-d91a6724792b
+
+	measure 'Faturamento (Top 10 clientes)' = IF ( RANKX ( ALLSELECTED ( dim_cliente ), [Faturamento],, DESC ) <= 10, [Faturamento] )
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 6. Rankings
+		lineageTag: bdb312ee-5b0b-5e46-b7a2-42c13ce3f518
+
+	measure 'Locações (Top 10 clientes)' = IF ( RANKX ( ALLSELECTED ( dim_cliente ), [Faturamento],, DESC ) <= 10, [Locações] )
+		formatString: #,0
+		displayFolder: 6. Rankings
+		lineageTag: 399b2a52-4811-5c04-be71-e929ee6c2ec6
+
+	column Value
+		isHidden
+		lineageTag: 10d2165b-e3e4-59ed-b792-bd842f4bd083
+		isNameInferred
+		sourceColumn: [Value]
+
+	partition _Medidas = calculated
+		mode: import
+		source = {1}
